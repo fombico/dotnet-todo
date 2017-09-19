@@ -17,7 +17,7 @@ resources:
     space: development
 
 jobs:
-- name: build-and-deploy
+- name: build-and-test
   plan:
   - get: repo
     trigger: true
@@ -27,5 +27,15 @@ jobs:
     params:
       manifest: repo/TodoApi/ci/manifest.yml
       path: ./build-output/publish
-#      environment_variables:
-#        WELCOME_MESSAGE: "Hello from Concourse"
+
+- name: smoke-test
+  plan:
+  - get: repo
+    passed: [build-and-test]
+  - get: deploy
+    passed: [build-and-test]
+    trigger: true
+  - task: smoke-test
+    file: repo/TodoApi/ci/smoke-test.yml
+    params:
+      Endpoint: http://todo-semipathologic-meaningness.cfapps.io

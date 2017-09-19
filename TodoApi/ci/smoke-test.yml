@@ -1,0 +1,18 @@
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: microsoft/dotnet
+
+inputs:
+  - name: repo
+
+run:
+  path: bash
+  args:
+  - -exc
+  - |
+    cd repo/TodoApi.SmokeTests
+    dotnet restore
+    dotnet xunit
