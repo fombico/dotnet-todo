@@ -14,46 +14,50 @@ namespace TodoApi
     {
 
         public IConfiguration Configuration { get; set; }
+        public IHostingEnvironment Environment { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Console.WriteLine("Configure Services");
+
             services.AddDbContext<TodoContext>(opt =>
             {
-                var hostname = $@"{Configuration["vcap:services:cleardb:0:credentials:hostname"]}";
-                var name = $@"{Configuration["vcap:services:cleardb:0:credentials:name"]}";
-                var username = $@"{Configuration["vcap:services:cleardb:0:credentials:username"]}";
-                var password = $@"{Configuration["vcap:services:cleardb:0:credentials:password"]}";
-                var connectionString = $@"server={hostname};database={name};uid={username};pwd={password};";
-                Console.WriteLine("Connection: " +  connectionString);
-                opt.UseMySql(connectionString);
-            });
-            services.AddMvc();
 
+                if (Environment.IsEnvironment("Integration Test"))
+                {
+                    opt.UseInMemoryDatabase("Integration Test");
+                } 
+                else
+                {
+                    var hostname = $@"{Configuration["vcap:services:cleardb:0:credentials:hostname"]}";
+                    var name = $@"{Configuration["vcap:services:cleardb:0:credentials:name"]}";
+                    var username = $@"{Configuration["vcap:services:cleardb:0:credentials:username"]}";
+                    var password = $@"{Configuration["vcap:services:cleardb:0:credentials:password"]}";
+                    var connectionString = $@"server={hostname};database={name};uid={username};pwd={password};";
+                    Console.WriteLine("Connection: " + connectionString);
+                    opt.UseMySql(connectionString);
+                }
+                
+            });
+            
             services.AddTransient(typeof(TodoService));
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             Console.WriteLine("Configure, env: " + env.EnvironmentName);
-//            if (env.IsDevelopment())
-//            {
-//                app.UseDeveloperExceptionPage();
-//            }
-            var builder = new ConfigurationBuilder()
+            
+            Configuration = new ConfigurationBuilder()
                             .SetBasePath(env.ContentRootPath)
                             .AddJsonFile("appsettings.json")
-                            .AddCloudFoundry();
+                            .AddCloudFoundry()
+                            .AddEnvironmentVariables()
+                            .Build();
 
-            Configuration = builder.AddEnvironmentVariables().Build();
-            
-//            Console.WriteLine(" ============ Configuration ============");
-//            foreach(var environ in Configuration.GetChildren())
-//            {
-//                Console.WriteLine($"{environ.Key}:{ environ.Value}");
-//            }
-//            Console.WriteLine(" ============ End of Configuration ============");
+            Environment = env;
             
             app.UseMvc();
         }
