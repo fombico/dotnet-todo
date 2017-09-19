@@ -21,4 +21,4 @@ run:
     dotnet xunit
     cd ../TodoApi
     dotnet publish
-    cp -r obj/Debug/netcoreapp2.0  ../build-output
+    cp -r obj/Debug/netcoreapp2.0  ../../build-output
