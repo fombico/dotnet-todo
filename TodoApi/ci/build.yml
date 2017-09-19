@@ -6,7 +6,7 @@ image_resource:
     repository: microsoft/dotnet
 
 inputs:
-  - name: todo-api
+  - name: repo
 
 outputs:
   - name: build-output
@@ -16,6 +16,9 @@ run:
   args:
   - -exc
   - |
-    cd todo-api
+    cd repo/TodoApi.Tests
+    dotnet restore
+    dotnet xunit
+    cd ../TodoApi
     dotnet publish
     cp -r obj/Debug/netcoreapp2.0  ../build-output

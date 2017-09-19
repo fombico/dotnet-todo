@@ -1,6 +1,6 @@
 ---
 resources:
-- name: todo-api
+- name: repo
   type: git
   source:
     uri: {{github-repository}}
@@ -19,13 +19,13 @@ resources:
 jobs:
 - name: build-and-deploy
   plan:
-  - get: todo-api
+  - get: repo
     trigger: true
   - task: build and test
     file: todo-api/TodoApi/ci/build.yml
   - put: deploy
     params:
-      manifest: todo-api/TodoApi/ci/manifest.yml
+      manifest: repo/TodoApi/ci/manifest.yml
       path: .
 #      environment_variables:
 #        WELCOME_MESSAGE: "Hello from Concourse"
