@@ -70,7 +70,6 @@ namespace TodoApi.Tests.Services
                 Assert.Equal("Item1", todoItems.ElementAt(0).Name);
                 Assert.Equal("Task A", todoItems.ElementAt(1).Name);
                 Assert.Equal("Task B", todoItems.ElementAt(2).Name);
-                throw new Exception("Failing test"); // TODO remove
             }
         }
 
