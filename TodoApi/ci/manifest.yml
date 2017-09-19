@@ -1,0 +1,5 @@
+---
+applications:
+- name: todo 
+  host: todo-semipathologic-meaningness
+  buildpack: https://github.com/cloudfoundry/dotnet-core-buildpack.git

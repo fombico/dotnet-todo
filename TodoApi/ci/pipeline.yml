@@ -1,0 +1,31 @@
+---
+resources:
+- name: todo-api
+  type: git
+  source:
+    uri: {{github-repository}}
+    branch: master
+    private_key: {{github-private-key}}
+
+- name: deploy
+  type: cf
+  source:
+    api: api.run.pivotal.io
+    username: {{cf-username}}
+    password: {{cf-password}}
+    organization: {{cf-org}}
+    space: development
+
+jobs:
+- name: build-and-deploy
+  plan:
+  - get: todo-api
+    trigger: true
+  - task: build and test
+    file: todo-api/TodoApi/ci/build.yml
+  - put: deploy
+    params:
+      manifest: todo-api/TodoApi/ci/manifest.yml
+      path: .
+#      environment_variables:
+#        WELCOME_MESSAGE: "Hello from Concourse"
