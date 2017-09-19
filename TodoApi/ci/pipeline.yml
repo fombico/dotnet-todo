@@ -22,7 +22,7 @@ jobs:
   - get: repo
     trigger: true
   - task: build and test
-    file: todo-api/TodoApi/ci/build.yml
+    file: repo/TodoApi/ci/build.yml
   - put: deploy
     params:
       manifest: repo/TodoApi/ci/manifest.yml
