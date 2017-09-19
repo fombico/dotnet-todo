@@ -21,6 +21,7 @@ namespace TodoApi.SmokeTests
 
             _baseUrl = configuration["Endpoint"];
             _httpClient = new HttpClient();
+            _httpClient.Timeout = TimeSpan.FromMinutes(6);
         }
 
         [Fact]
