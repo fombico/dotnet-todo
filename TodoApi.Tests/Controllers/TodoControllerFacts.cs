@@ -18,7 +18,7 @@ namespace TodoApi.Tests.Controllers
         public TodoControllerFacts()
         {
             _server = new TestServer(new WebHostBuilder()
-                .UseContentRoot("/Users/pivotal/RiderProjects/TodoApi/TodoApi")
+                .UseContentRoot("../../../../TodoApi")
                 .UseEnvironment("Integration Test")
                 .UseStartup<Startup>());
             _client = _server.CreateClient();
