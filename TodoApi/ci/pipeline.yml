@@ -26,6 +26,6 @@ jobs:
   - put: deploy
     params:
       manifest: repo/TodoApi/ci/manifest.yml
-      path: .
+      path: ./build-output/publish
 #      environment_variables:
 #        WELCOME_MESSAGE: "Hello from Concourse"
