@@ -45,6 +45,8 @@ jobs:
   - get: repo
     passed: [smoke-test]
     trigger: true
+  - task: build and test
+    file: repo/TodoApi/ci/build.yml
   - put: deploy
     params:
       manifest: repo/TodoApi/ci/manifest-prod.yml
