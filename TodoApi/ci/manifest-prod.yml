@@ -1,0 +1,5 @@
+---
+applications:
+- name: todo-prod
+  host: todo-prod
+  buildpack: https://github.com/cloudfoundry/dotnet-core-buildpack.git

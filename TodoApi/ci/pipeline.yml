@@ -39,3 +39,14 @@ jobs:
     file: repo/TodoApi/ci/smoke-test.yml
     params:
       Endpoint: http://todo-semipathologic-meaningness.cfapps.io
+
+- name: promote
+  plan:
+  - get: repo
+    passed: [smoke-test]
+    trigger: true
+  - put: deploy
+    params:
+      manifest: repo/TodoApi/ci/manifest-prod.yml
+      path: ./build-output/publish
+      current_app_name: todo-semipathologic-meaningness
