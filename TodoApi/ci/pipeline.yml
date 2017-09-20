@@ -51,4 +51,4 @@ jobs:
     params:
       manifest: repo/TodoApi/ci/manifest-prod.yml
       path: ./build-output/publish
-      current_app_name: todo
+      current_app_name: todo-prod
